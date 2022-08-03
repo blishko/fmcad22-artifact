@@ -6,7 +6,7 @@ ORIGINAL_DIR=$(pwd)
 cd ${CURRENT_DIR}
 echo "Benchmark suite,split-TPA,TPA,Z3_Spacer,GSpacer,Eldarica" 
 
-cd "times/multi-phase_safe"
+cd "../times/multi-phase_safe"
 only_results=`paste -d',' split-tpa.csv tpa.csv z3_spacer.csv gspacer.csv eldarica.csv | cut -d',' -f2,5,8,11,14`
 SAT=()
 UNIQUE=()
@@ -36,7 +36,7 @@ LINE=$(IFS=, ; echo "${combined[*]}")
 echo ${LINE} | sed 's/_/ /g' | sed 's/^/multi-phase safe,/'
 
 cd ${CURRENT_DIR} 
-cd "times/multi-phase_unsafe"
+cd "../times/multi-phase_unsafe"
 only_results=`paste -d',' split-tpa.csv tpa.csv z3_spacer.csv gspacer.csv eldarica.csv | cut -d',' -f2,5,8,11,14`
 UNSAT=()
 UNIQUE=()
