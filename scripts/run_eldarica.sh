@@ -1,5 +1,5 @@
-SOLVER="${Z3_ROOT}/bin/z3"
-OPTIONS="fp.engine=spacer"
+SOLVER="${ELDARICA_ROOT}/eld"
+OPTIONS=""
 BENCHMARK_DIR=$1
 TIMEOUT=$2
 
@@ -7,7 +7,7 @@ TIMEOUT=$2
 #echo "Timeout is ${TIMEOUT}"
 
 category=`basename ${BENCHMARK_DIR}`
-OUTPUT_DIR="${OUTPUT_ROOT}/${category}/z3_spacer"
+OUTPUT_DIR="${OUTPUT_ROOT}/${category}/eldarica"
 mkdir -p ${OUTPUT_DIR}
 
 #echo "Output dir is ${OUTPUT_DIR}"

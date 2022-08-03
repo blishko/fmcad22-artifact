@@ -5,6 +5,9 @@ log_dir="raw_logs"
 times_dir="times"
 
 for top_dir in ${log_dir}/multi-phase_safe ${log_dir}/multi-phase_unsafe ${log_dir}/LRA-TS; do
+    if [ ! -d ${top_dir} ]; then
+        continue;
+    fi
     bench_dir_name=`basename ${top_dir}`
     echo "Processing benchmark directory ${bench_dir_name}"
     for tool_dir in ${top_dir}/*; do
