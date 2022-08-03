@@ -14,7 +14,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 
 # Install a new package, without unnecessary recommended packages:
-apt-get -y install --no-install-recommends wget unzip time vim openjdk-11-jre-headless cmake git build-essential python3 python3-distutils
+apt-get -y install --no-install-recommends wget unzip time vim openjdk-11-jre-headless cmake git build-essential bsdmainutils python3 python3-distutils
 
 # Delete cached files we don't need anymore (note that if you're
 # using official Docker images for Debian or Ubuntu, this happens
