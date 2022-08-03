@@ -7,7 +7,7 @@ TIMEOUT=$2
 #echo "Timeout is ${TIMEOUT}"
 
 category=`basename ${BENCHMARK_DIR}`
-OUTPUT_DIR="${OUTPUT_ROOT}/${category}/split-tpa"
+OUTPUT_DIR="${OUTPUT_ROOT}/${category}/tpa"
 mkdir -p ${OUTPUT_DIR}
 
 #echo "Output dir is ${OUTPUT_DIR}"
