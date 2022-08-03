@@ -15,7 +15,7 @@ RUN ./install-packages.sh
 # set up Golem
 RUN mkdir golem && cd golem && \  
     wget "https://github.com/usi-verification-and-security/golem/releases/download/v0.1.0/golem-linux" && \
-    mv golem-linux golem
+    mv golem-linux golem && chmod +x golem
 
 ENV GOLEM_ROOT="${ARTIFACT_ROOT}/golem"
 
