@@ -9,14 +9,8 @@ WORKDIR $ARTIFACT_ROOT
 ENV TZ=America/Chicago
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get update
-RUN apt-get -y install wget unzip time vim
-RUN apt-get -y install openjdk-11-jre-headless 
-RUN apt-get -y install cmake 
-RUN apt-get -y install git build-essential
-RUN apt-get -y install python3 python3-distutils
-
-
+COPY install-packages.sh .
+RUN ./install-packages.sh
 
 # set up Golem
 RUN mkdir golem && cd golem && \  
