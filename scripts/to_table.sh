@@ -1,10 +1,8 @@
 #!/bin/bash
 
-CURRENT_DIR=$(cd "$(dirname "$0")" && pwd)
 results_dir=$1
-#echo ${CURRENT_DIR}
 ORIGINAL_DIR=$(pwd)
-cd ${CURRENT_DIR}/${results_dir}
+cd ${results_dir}
 echo "Ben.,split-TPA,TPA,Z3 Spacer,GSpacer,Eldarica" 
 paste -d',' split-tpa.csv tpa.csv z3_spacer.csv gspacer.csv eldarica.csv | # join results from all solvers 
     sed 's/indet,300\.00/indet,TO/g' | # replace timeouts with special mark
