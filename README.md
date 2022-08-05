@@ -1,6 +1,43 @@
-# Experiments
+# Introduction
 
-This is a full report on the experiments evaluating algorithm `split-TPA`.
+This README and the related artifact are designed for allowing independent reproduction of the results reported in the paper `Split Transition Power Abstraction for Unbounded Safety` accepted to the `FMCAD 2022` conference.
+
+## Set up
+The artifact is distributed as a `docker` image.
+
+It is possible to simply pull the provided image from Docker Hub:
+```
+$ docker image pull blishko/fmcad22:latest
+```
+
+Alternatively, the image can be build locally from this repository:
+```
+$ docker build -f Dockerfile . -t blishko/fmcad22
+```
+
+## Machine specification
+We tested the docker image on the same hardware where we ran the original experiments.
+This is quite a powerful machine with AMD EPYC 7452 32-core processor and 8x32 GiB of memory.
+
+# Docker image structure
+The docker image contains all the tools used in the experiments, the benchmarks sets and helper scripts for running the tools and presenting the results.
+The root directory of the artifact is `/home` and should be the working directory when the container is running.
+It contains the following subdirectories:
+
+* `benchmarks`: collection of benchmarks used in the experiments
+
+* `scripts`: collection of helper scripts for running experiments and presenting the results
+
+* `raw_logs`,`times`: initially empty directories for storing results of the experiments
+
+* `eldarica`: [`Eldarica`](https://github.com/uuverifiers/eldarica) solver (v2.0.8)
+
+* `golem`: [`Golem`](https://github.com/usi-verification-and-security/golem) (v0.1.0)
+
+* `spacer`: [`z3`](https://github.com/Z3Prover/z3)(v4.8.17) which contains `Spacer` as one of its engines.
+
+* `gspacer`: A [fork]((https://github.com/hgvk94/z3/tree/chccomp21)) of `z3` with the version of `Spacer` with global guidance.
+
 
 ## Benchmark sets
 
@@ -12,31 +49,39 @@ We evaluated our implementation of `split-TPA` in our CHC solver [`Golem`](https
 We used Golem 0.1.0 both for `split-TPA` and `TPA` algorithms.
 We also compared to the state-of-the-art tools [`Eldarica 2.0.8`](https://github.com/uuverifiers/eldarica), `Spacer` inside [`Z3 4.8.17`](https://github.com/Z3Prover/z3), and [`GSpacer`](https://github.com/hgvk94/z3/tree/chccomp21), a new version of `Spacer` not yet merged into the main repository of `z3`.
 
-### Command line arguments
-
-#### Golem
-The engines `split-TPA` and `TPA` of `Golem` are enabled by passing a command line argument `--engine=split-tpa` and `--engine=tpa`, respectively. Additionally, `Golem` requires the SMT-LIB logic of the benchmarks specified up-front. Multi-phase benchmarks use `--logic=QF_LIA` and LRA-TS uses `--logic=QF_LRA`.
-
-To enable more verbose output with information about how transition invariant was discovered, increase verbosity of `Golem` by passing `-v` option.
-
-An example command line could look like the following:
+## Scripts
+The `Docker` container contains scripts for running each solver individually on all benchmarks in a given folder with a given timeout.
+For example, to run `Eldarica` on the safe version of multi-phase benchmarks with 10 seconds timeout, run (inside the container):
 ```
-$ golem --logic=QF_LIA --engine=split-tpa -v -i <input_file>
+$ bash scripts/run_eldarica.sh benchmarks/ 10
 ```
 
-#### Eldaric and Z3-Spacer
-Both `Eldarica` and `Z3-Spacer` have been run with default arguments.
-`Spacer` is the default fixed-point engine of `z3`, but you can make sure by passing `fp.engine=spacer` to `z3`.
+Additionally, there is a script to run all 5 algorithms, either sequentially or in parallel using scripts `run_all_solvers.sh` and `run_all_solvers_parallel.sh`.
+Both expect the same two arguments as the scripts for the individual algorithms.
 
-#### GSpacer
-Since `GSpacer` is not yet merged into the main `z3` repository, we obtained the version used for CHC-COMP'21 and used the options recommended by the authors.
-
+# Reproducing results
+We provide a script intended to be used on the host machine, which fires up a docker container from the image, runs all the tools on multi-phase benchmarks, present the results in the console and deletes the container.
+This is intended for the reproduction of the results presented in Table I and Table II of the paper.
+The script is `docker_run_all.sh` available in this repository, but not in the container itself.
+By default, it runs the solvers sequentially; passing `-p` will instead run all 5 solvers in parallel.
+The default timeout is `300` seconds, which is the timeout used in the original experiments.
+This can be changes with option `-t`.
+For example the following will run all solvers in parallel with increased timeout of 330 seconds:
 ```
-z3 fp.engine=spacer fp.spacer.use_inc_clause=false fp.spacer.global=true fp.spacer.conjecture=true fp.spacer.concretize=true fp.spacer.order_children=0 fp.spacer.expand_bnd=true
+$ bash docker_run_all.sh -p -t 330
 ```
 
-### Results
-The raw outputs from all the tools as produced in our experiments can be found in the folder `raw_logs`. CSV files summarizing the results can be obtained using script `raw_logs_to_times.sh`. The files with results of each tool can be found in the folder `times`, categorized by the benchmark sets.
+### Note on time limit
+We noticed some overhead in running docker even when running on the same hardware as the original experiments (at an order of 10%).
+For weaker machines, we would recommend to increase the limit up to twice the original limit of 300 seconds.
 
-To see the summary of the results, use `show_results.sh`.
-This generates both the summary and full table for multi-phase benchmarks, and also a small summary of the performance on `LRA-TS` benchmarks.
+The docker is also known to cause much larger slowdowns on Mac with M1 chips.
+
+### Expected runtime
+Running all solvers sequentially required more that 12 hours for *each* of safe and unsafe version of multi-phase benchmarks.
+If more than 5 cores are available, we recommend running all solvers in parallel, which should cut the time down to 3 hours per benchmark set.
+
+### LRA-TS category
+This category contains many more benchmarks than the multi-phase loops and we did not present the full results in the paper, only the summarized statistics.
+For this reason we did not include it in the main script for reproducing the results.
+Experienced users can run each solver individually on this benchmark category from inside the docker container.
