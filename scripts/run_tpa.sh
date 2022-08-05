@@ -11,7 +11,7 @@ OUTPUT_DIR="${OUTPUT_ROOT}/${category}/tpa"
 mkdir -p ${OUTPUT_DIR}
 
 #echo "Output dir is ${OUTPUT_DIR}"
-
+echo "Running TPA of Golem"
 
 for file in ${BENCHMARK_DIR}/*.smt2; do
     echo ${file}

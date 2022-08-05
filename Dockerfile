@@ -43,6 +43,7 @@ ENV GSPACER_ROOT="${ARTIFACT_ROOT}/gspacer"
 
 # more environment setup
 ENV OUTPUT_ROOT="${ARTIFACT_ROOT}/raw_logs"
+ENV SCRIPTS_ROOT="${ARTIFACT_ROOT}/scripts"
 
 RUN mkdir raw_logs && mkdir times
 

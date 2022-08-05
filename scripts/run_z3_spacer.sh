@@ -11,7 +11,7 @@ OUTPUT_DIR="${OUTPUT_ROOT}/${category}/z3_spacer"
 mkdir -p ${OUTPUT_DIR}
 
 #echo "Output dir is ${OUTPUT_DIR}"
-
+echo "Running Z3_Spacer"
 
 for file in ${BENCHMARK_DIR}/*.smt2; do
     echo ${file}

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-extract_script="./extract_times.sh"
+extract_script="${ARTIFACT_ROOT}/scripts/extract_times.sh"
 log_dir="${ARTIFACT_ROOT}/raw_logs"
 times_dir="${ARTIFACT_ROOT}/times"
 
