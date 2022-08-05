@@ -1,5 +1,12 @@
 SOLVER="${GOLEM_ROOT}/golem"
 OPTIONS="--logic=QF_LIA --engine=split-tpa"
+## Alternative options
+# For outputting information about invariant found
+#OPTIONS="--logic=QF_LIA --engine=split-tpa -v"
+
+# For running LRA-TS benchmarks
+#OPTIONS="--logic=QF_LRA --engine=split-tpa"
+
 BENCHMARK_DIR=$1
 TIMEOUT=$2
 
