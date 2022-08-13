@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/520524081.svg)](https://zenodo.org/badge/latestdoi/520524081)
+
 # Introduction
 
 This README and the related artifact are designed for allowing independent reproduction of the results reported in the paper `Split Transition Power Abstraction for Unbounded Safety` accepted to the `FMCAD 2022` conference.
